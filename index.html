@@ -1,0 +1,118 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TGStarApp</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { background-color: #1d283a; color: white; font-family: 'Roboto', sans-serif; text-align: center; margin: 0; padding: 0; max-width: 400px; margin: 0 auto; }
+        .header { background-color: #26334a; color: #FFFFFF; padding: 15px; display: flex; align-items: center; gap: 10px; font-size: 30px; padding-left: 20px; font-family: "Pacifico", serif; }
+        .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-width: 800px; margin: auto; padding: 20px; margin-bottom: 70px; }
+        .gallery img { width: 100%; height: auto; display: block; border-radius: 5px; transition: transform 0.2s ease-in-out; cursor: pointer; }
+        .gallery img:active { transform: scale(0.9); }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 999; }
+        .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #26334a; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); text-align: center; z-index: 1000; width: 280px; }
+        .popup img { max-width: 120px; max-height: 120px; width: auto; height: auto; border-radius: 8px; margin: 10px 0; }
+        .popup h2 { font-size: 18px; margin: 10px 0; }
+        .popup p { font-size: 14px; margin: 10px 0; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; border-radius: 6px; font-size: 14px; margin: 5px; }
+        .close-btn { background: #FF4C4C; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-left: 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .footer { display: flex; justify-content: space-around; align-items: center; background-color: #1d283a; width: 100%; padding: 10px 0; position: fixed; bottom: 0; box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); max-width: 400px; }
+        .footer a { color: #8899a6; text-decoration: none; font-size: 14px; text-align: center; display: flex; flex-direction: column; align-items: center; font-weight: 500; }
+        .footer a.active { color: #0088cc; }
+        .icon { font-size: 20px; margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+    <div id="appContent">
+        <div class="header">
+            <img src="https://files.catbox.moe/0a5iq0.gif" alt="Icon">
+            TGStar
+        </div>
+        <div id="overlay" class="overlay" onclick="closePopup()"></div>
+        <div class="gallery">
+            <img src="https://i.postimg.cc/4ymQhdg2/kefonf.png" alt="Sticker" onclick="showPurchase(15, this.src)">
+            <img src="https://i.postimg.cc/k4Mcqshm/x8v1oy.png" alt="Sticker" onclick="showPurchase(15, this.src)">
+            <img src="https://i.postimg.cc/L6JxJy44/hmb9mv.png" alt="Sticker" onclick="showPurchase(25, this.src)">
+            <img src="https://i.postimg.cc/Y09bfR13/p92d2r.png" alt="Sticker" onclick="showPurchase(25, this.src)">
+            <img src="https://i.postimg.cc/q7sbkzJ8/g5b201.png" alt="Sticker" onclick="showPurchase(50, this.src)">
+            <img src="https://i.postimg.cc/fy2q6pwp/tuc7gf.png" alt="Sticker" onclick="showPurchase(50, this.src)">
+            <img src="https://i.postimg.cc/nzxW7qRR/b96as5.png" alt="Sticker" onclick="showPurchase(50, this.src)">
+            <img src="https://i.postimg.cc/T1RZ8nnL/8bfhmh.png" alt="Sticker" onclick="showPurchase(100, this.src)">
+            <img src="https://i.postimg.cc/fRpn3tQp/8y863l.png" alt="Sticker" onclick="showPurchase(100, this.src)">
+            <img src="https://i.postimg.cc/fbVzpQMn/tiet1k.png" alt="Sticker" onclick="showPurchase(150, this.src)">
+        </div>
+        <div id="popup" class="popup">
+            <h2>Confirm Purchase</h2>
+            <img id="stickerImage" src="" alt="Selected Sticker">
+            <p>Buy for <span id="stickerPrice"></span> ⭐?</p>
+            <button type="button" id="buyButton" onclick="confirmPurchase()">Yes, Buy Now</button>
+            <button type="button" class="close-btn" onclick="closePopup()">Cancel</button>
+        </div>
+        <div class="footer">
+            <a href="index.php" class="active"><i class="fas fa-house icon"></i>Home</a>
+            <a href="Task"><i class="fas fa-tasks icon"></i>Task</a>
+            <a href="friend.php"><i class="fas fa-user-group icon"></i>Friends</a>
+            <a href="DailySecretCode"><i class="fas fa-key icon"></i>Daily Code</a>
+        </div>
+    </div>
+    <script>
+        const userid = 6792335123;
+        let selectedAmount = 0;// Direct submit endpoint
+    const SUBMIT_URL = 'https://saeedg110.serv00.net/App/submit.php';
+
+    function showPurchase(amount, src) {
+        selectedAmount = amount;
+        document.getElementById('stickerImage').src = src;
+        document.getElementById('stickerPrice').textContent = amount;
+        document.getElementById('popup').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    function triggerConfetti() {
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    }
+
+    async function confirmPurchase() {
+        const btn = document.getElementById('buyButton');
+        btn.disabled = true;
+        btn.innerHTML = 'Purchasing... <div class="loader"></div>';
+        try {
+            const url = `${SUBMIT_URL}?user_id=${userid}&amount=${selectedAmount}`;
+            console.log('Request URL:', url);
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Network error: ${response.status} ${response.statusText}`);
+            const data = await response.json();
+            if (data.status === 'success') {
+                triggerConfetti();
+                alert(data.message);
+            } else {
+                alert(data.message || 'Purchase failed');
+            }
+        } catch (err) {
+            console.error('Purchase Error:', err);
+            alert('Error occurred: ' + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Yes, Buy Now';
+            closePopup();
+        }
+    }
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+</script>
+
+</body>
+  </html>
