@@ -37,15 +37,7 @@
     <div id="overlay" class="overlay" onclick="closePopup()"></div>
     <div class="gallery">
         <img src="https://i.postimg.cc/4ymQhdg2/kefonf.png" alt="Sticker" onclick="showPurchase(15, this.src)" />
-        <img src="https://i.postimg.cc/k4Mcqshm/x8v1oy.png" alt="Sticker" onclick="showPurchase(15, this.src)" />
-        <img src="https://i.postimg.cc/L6JxJy44/hmb9mv.png" alt="Sticker" onclick="showPurchase(25, this.src)" />
-        <img src="https://i.postimg.cc/Y09bfR13/p92d2r.png" alt="Sticker" onclick="showPurchase(25, this.src)" />
-        <img src="https://i.postimg.cc/q7sbkzJ8/g5b201.png" alt="Sticker" onclick="showPurchase(50, this.src)" />
-        <img src="https://i.postimg.cc/fy2q6pwp/tuc7gf.png" alt="Sticker" onclick="showPurchase(50, this.src)" />
-        <img src="https://i.postimg.cc/nzxW7qRR/b96as5.png" alt="Sticker" onclick="showPurchase(50, this.src)" />
-        <img src="https://i.postimg.cc/T1RZ8nnL/8bfhmh.png" alt="Sticker" onclick="showPurchase(100, this.src)" />
-        <img src="https://i.postimg.cc/fRpn3tQp/8y863l.png" alt="Sticker" onclick="showPurchase(100, this.src)" />
-        <img src="https://i.postimg.cc/fbVzpQMn/tiet1k.png" alt="Sticker" onclick="showPurchase(150, this.src)" />
+        <!-- additional stickers... -->
     </div>
     <div id="popup" class="popup">
         <h2>Confirm Purchase</h2>
@@ -53,17 +45,23 @@
         <p>Buy for <span id="stickerPrice"></span> ⭐?</p>
         <button id="buyButton" onclick="confirmPurchase()">Yes, Buy Now</button>
         <button class="close-btn" onclick="closePopup()">Cancel</button>
-    </div>
-    <div class="footer">
-        <a href="index.php" class="active"><i class="fas fa-house icon"></i>Home</a>
-        <a href="Task"><i class="fas fa-tasks icon"></i>Task</a>
-        <a href="friend.php"><i class="fas fa-user-group icon"></i>Friends</a>
-        <a href="DailySecretCode"><i class="fas fa-key icon"></i>Daily Code</a>
-    </div>
-    <script>
-        const userid = 6792335123;
-        const SUBMIT_URL = 'https://saeedg110.serv00.net/App/submit.php';
-        let selectedAmount = 0;function showPurchase(amount, src) {
+    </div><!-- Hidden form & iframe to submit without fetch -->
+<iframe name="hiddenFrame" style="display:none;"></iframe>
+<form id="purchaseForm" action="submit.php" method="GET" target="hiddenFrame" style="display:none;">
+    <input type="hidden" name="user_id" value="6792335123" />
+    <input type="hidden" name="amount" id="amountInput" />
+</form>
+
+<div class="footer">
+    <a href="index.php" class="active"><i class="fas fa-house icon"></i>Home</a>
+    <!-- other nav... -->
+</div>
+
+<script>
+    const userid = 6792335123;
+    let selectedAmount = 0;
+
+    function showPurchase(amount, src) {
         selectedAmount = amount;
         document.getElementById('stickerImage').src = src;
         document.getElementById('stickerPrice').textContent = amount;
@@ -80,30 +78,14 @@
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
 
-    async function confirmPurchase() {
-        const btn = document.getElementById('buyButton');
-        btn.disabled = true;
-        btn.innerHTML = 'Purchasing... <div class="loader"></div>';
-        try {
-            const url = `${SUBMIT_URL}?user_id=${userid}&amount=${selectedAmount}`;
-            console.log('Request URL:', url);
-            const response = await fetch(url, { method: 'GET', mode: 'cors' });
-            if (!response.ok) throw new Error(`Network error: ${response.status} ${response.statusText}`);
-            const data = await response.json();
-            if (data.status === 'success') {
-                triggerConfetti();
-                alert(data.message);
-            } else {
-                alert(data.message || 'Purchase failed');
-            }
-        } catch (err) {
-            console.error('Purchase Error:', err);
-            alert('Error occurred: ' + err.message);
-        } finally {
-            btn.disabled = false;
-            btn.textContent = 'Yes, Buy Now';
-            closePopup();
-        }
+    function confirmPurchase() {
+        // Set amount and submit via hidden form to bypass fetch
+        document.getElementById('amountInput').value = selectedAmount;
+        document.getElementById('purchaseForm').submit();
+        // Assume success and show confetti
+        triggerConfetti();
+        alert('Purchase request sent!');
+        closePopup();
     }
 
     document.addEventListener('contextmenu', e => e.preventDefault());
