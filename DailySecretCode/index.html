@@ -1,1 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<!-- Mirrored from saeedg110.serv00.net/App/DailySecretCode/ by HTTrack Website Copier/3.x [XR&CO'2017], Tue, 06 May 2025 10:45:57 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Daily Secret Code</title>
+    <link href="../../../external.html?link=https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="../../../cdnjs.cloudflare.com/ajax/libs/bodymovin/5.10.2/lottie.min.js"></script>
+    <style>
+        html, body {
+            background-color: #1d283a;
+            margin: 0;
+            padding: 0;
+            font-family: "Roboto", sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+        }
+        .container {
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-bottom: 70px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .sticker-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px auto;
+        }
+        .header {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .countdown {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #1da1f2;
+        }
+        .code-inputs {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .code-input {
+            width: 40px;
+            height: 50px;
+            font-size: 24px;
+            text-align: center;
+            margin: 0 5px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background-color: #f4f4f4;
+        }
+        .code-input:focus {
+            outline: none;
+            border-color: #1da1f2;
+        }
+        .btn {
+            background-color: #1da1f2;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .btn:disabled {
+            background-color: #6b7a8f;
+            cursor: not-allowed;
+        }
+        .notification {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #232f3e;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #1d283a;
+            width: 100%;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .footer a {
+        color: #8899a6;
+        text-decoration: none;
+        font-size: 14px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 500;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .footer a:focus,
+    .footer a:active {
+        outline: none;
+        background-color: transparent;
+    }
+        .footer a.active {
+            color: #0088cc;
+        }
+        .icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        .spinner {
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script src="../../../telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="sticker-container" class="sticker-container"></div>
+        <div class="header">Enter Today's Secret Code</div>
+        <div class="countdown" id="countdown"></div>
+        <div class="code-inputs" id="codeInputs"></div>
+        <button class="btn" id="checkBtn" onclick="checkCode()" disabled>Check Code</button>
+        <div id="notification"></div>
+    </div>
+
+    <div class="footer">
+        <a href="../../../external.html?link=https://saeedg110.serv00.net/App"><i class="fas fa-house icon"></i>Home</a>
+        <a href="../Task/index.html"><i class="fas fa-tasks icon"></i>Task</a>
+        <a href="../friend.html"><i class="fas fa-user-group icon"></i>Friends</a>
+        <a href="index.html" class="active"><i class="fas fa-key icon"></i>Daily Code</a>
+    </div>
+
+    <script>
+    const todayCode = '48044';
+    const tgApp = Telegram.WebApp;
+    
+    tgApp.ready();
+    tgApp.setHeaderColor("#1d283a");
+    tgApp.setBackgroundColor("#1d283a");
+    tgApp.setBottomBarColor("#1d283a");
+
+    lottie.loadAnimation({
+        container: document.getElementById("sticker-container"),
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "App/SecretCodeDuck.json"
+    });
+
+    const userId = tgApp.initDataUnsafe?.user?.id;
+    const checkBtn = document.getElementById("checkBtn");
+
+    if (!userId) {
+        window.location.href = "../../../external.html?link=https://saeedg110.serv00.net/WebApp/Bad.php";
+    }
+
+    function getPakistanTime() {
+        const options = { timeZone: 'Asia/Karachi' };
+        const now = new Date();
+        const pakistanTimeStr = now.toLocaleString('en-US', options);
+        return new Date(pakistanTimeStr);
+    }
+
+    async function initialize() {
+        const response = await fetch(`App/Claimcheck.php?user_id=${userId}`);
+        const data = await response.json();
+        
+        if (data.claim === "Yes") {
+            displayNotification("You have already claimed your reward today.");
+            checkBtn.textContent = "Claimed";
+            checkBtn.disabled = true;
+            disableInputs();
+        } else {
+            startCodeInput();
+        }
+    }
+
+    function disableInputs() {
+        document.getElementById("codeInputs").innerHTML = "";
+        checkBtn.disabled = true;
+    }
+
+    function displayNotification(message) {
+        const notification = document.getElementById("notification");
+        notification.innerHTML = `<div class="notification">${message}</div>`;
+    }
+
+    let userCode = [];
+    let inputElements = [];
+
+    function startCodeInput() {
+        const codeLength = todayCode.length;
+        const inputsContainer = document.getElementById("codeInputs");
+        inputsContainer.innerHTML = "";
+        userCode = [];
+        inputElements = [];
+
+        for (let i = 0; i < codeLength; i++) {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.maxLength = 1;
+            input.className = "code-input";
+            input.dataset.index = i;
+            input.oninput = handleInput;
+            input.onkeydown = handleKeyDown;
+            input.onpaste = handlePaste;
+            input.onfocus = () => input.select();
+            inputsContainer.appendChild(input);
+            inputElements.push(input);
+        }
+    }
+
+    function handleInput(e) {
+        const input = e.target;
+        const index = parseInt(input.dataset.index);
+        const value = input.value;
+        
+        if (value.match(/^[0-9a-zA-Z]$/)) {
+            userCode[index] = value.toUpperCase();
+            input.value = userCode[index];
+            
+            if (index < inputElements.length - 1) {
+                inputElements[index + 1].focus();
+            }
+        } else {
+            input.value = "";
+            return;
+        }
+        
+        toggleButtonState();
+    }
+
+    function handleKeyDown(e) {
+        const input = e.target;
+        const index = parseInt(input.dataset.index);
+        
+        if (e.key === "Backspace" && input.value === "" && index > 0) {
+            inputElements[index - 1].focus();
+        }
+    }
+
+    function handlePaste(e) {
+        e.preventDefault();
+        const pasteData = e.clipboardData.getData('text').toUpperCase();
+        const cleanData = pasteData.replace(/[^0-9A-Z]/g, '');
+        
+        if (cleanData.length === inputElements.length) {
+            for (let i = 0; i < inputElements.length; i++) {
+                if (i < cleanData.length) {
+                    inputElements[i].value = cleanData[i];
+                    userCode[i] = cleanData[i];
+                }
+            }
+            toggleButtonState();
+        }
+    }
+
+    function toggleButtonState() {
+        const allFilled = inputElements.every(input => input.value.trim() !== "");
+        checkBtn.disabled = !allFilled;
+    }
+
+    async function checkCode() {
+        const enteredCode = userCode.join("");
+        if (enteredCode !== todayCode) {
+            displayNotification("❌ Wrong code! Please try again.");
+            return;
+        }
+
+        checkBtn.disabled = true;
+        checkBtn.innerHTML = '<span class="spinner"><i class="fas fa-circle-notch"></i></span> Claiming';
+        
+        const urlParams = new URLSearchParams(tgApp.initData);
+        const hash = urlParams.get("hash");
+        urlParams.delete("hash");
+        urlParams.sort();
+        
+        let dataCheckString = "";
+        for (const [key, value] of urlParams.entries()) {
+            dataCheckString += key + "=" + value + "\n";
+        }
+        dataCheckString = dataCheckString.slice(0, -1);
+
+        try {
+            const response = await fetch(`App/reward.php`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    dataCheckString: dataCheckString,
+                    hash: hash,
+                    userId: userId
+                })
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                const added = data.balanceData?.added || 1;
+                displayNotification(`🎉 Congratulations! You entered the correct code and earned ${added} Stars`);
+                checkBtn.textContent = "Claimed";
+                disableInputs();
+            } else {
+                displayNotification("❌ Failed: " + (data.message || "Unknown error"));
+                checkBtn.disabled = false;
+                checkBtn.textContent = "Check Code";
+            }
+        } catch (error) {
+            displayNotification("⚠️ Connection error");
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Code";
+        }
+    }
+
+    function updateCountdown() {
+        const now = getPakistanTime();
+        const midnight = new Date(now);
+        midnight.setDate(midnight.getDate() + 1);
+        midnight.setHours(0, 0, 0, 0);
+        
+        const diff = midnight - now;
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById("countdown").textContent = `Time left today: ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+    initialize();
+    </script>
+</body>
+
+<!-- Mirrored from saeedg110.serv00.net/App/DailySecretCode/ by HTTrack Website Copier/3.x [XR&CO'2017], Tue, 06 May 2025 10:45:58 GMT -->
+</html>
