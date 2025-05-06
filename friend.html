@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from saeedg110.serv00.net/App/friend.php by HTTrack Website Copier/3.x [XR&CO'2017], Tue, 06 May 2025 10:45:56 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Friends</title>
+    <link rel="stylesheet" href="../../cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+    @import url("../../external.html?link=https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap");
+
+    html, body {
+        background-color: #1d283a;
+        color: #ffffff;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: "Roboto", sans-serif;
+        overflow: hidden;
+    }
+
+    .container {
+        max-width: 400px;
+        text-align: center;
+        padding: 10px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .invite-section {
+        background-color: #26334a;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .invite-section h3 {
+        font-size: 24px;
+        color: #ffffff;
+        margin: 10px 0;
+    }
+
+    .invite-section p {
+        color: #8899a6;
+        font-size: 14px;
+    }
+
+    .bonus-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 15px 0;
+        background-color: #1d283a;
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    .bonus-option i {
+        font-size: 24px;
+        color: #4CAF50;
+    }
+
+    .bonus-option-text {
+        flex-grow: 1;
+        text-align: left;
+        padding-left: 10px;
+        color: #ffffff;
+    }
+
+    .bonus-option-text h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .bonus-option-text span {
+        color: #4CAF50;
+        font-size: 14px;
+    }
+
+    .invite-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .invite-button, .copy-button {
+        width: 50px;
+        height: 50px;
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 10px;
+        cursor: pointer;
+        border: none;
+        font-size: 16px;
+        font-family: "Roboto", sans-serif;
+    }
+
+    .invite-button {
+        flex: 3;
+        font-weight: 700;
+    }
+
+    .copy-button {
+        flex: 1;
+        text-align: center;
+    }
+
+    .invite-button:hover, .copy-button:hover {
+        background-color: #45a049;
+    }
+
+    .referral-container {
+        height: 190px;
+        overflow-y: auto;
+        margin-top: 1px;
+        border: 1px solid #3b4a63;
+        border-radius: 10px;
+        background-color: #26334a;
+    }
+
+    .referral-list {
+        margin: 0;
+        padding: 10px;
+    }
+
+    .referral-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #3b4a63;
+        font-size: 14px;
+    }
+
+    .referral-item div:first-child {
+        max-width: 200px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .referral-stats {
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px;
+        background-color: #4CAF50;
+        color: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .notification.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .footer {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background-color: #1d283a;
+        width: 100%;
+        padding: 10px 0;
+        position: fixed;
+        bottom: 0;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .footer a {
+        color: #8899a6;
+        text-decoration: none;
+        font-size: 14px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 500;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .footer a:focus,
+    .footer a:active {
+        outline: none;
+        background-color: transparent;
+    }
+
+    .footer a.active {
+        color: #0088cc;
+    }
+
+    .icon {
+        font-size: 20px;
+        margin-bottom: 4px;
+    }
+
+    .coin-icon {
+        vertical-align: middle;
+        margin-bottom: 3px;
+        width: 14px;
+        height: 14px;
+    }
+    </style>
+    <script src="../../telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="invite-section">
+            <i class="fas fa-users fa-3x" style="color: #4CAF50;"></i>
+            <h3>Invite friends!</h3>
+            <p>You and your friend will receive bonuses for invitation.</p>
+
+            <div class="bonus-option">
+                <i class="fas fa-gift"></i>
+                <div class="bonus-option-text">
+                    <h4>Invite a friend</h4>
+                    <span><img src="../../www.emojiall.com/images/240/telegram/2b50.gif_%3b" class="coin-icon" alt="Star Icon"> +1 Star to you and your friend</span>
+                </div>
+            </div>
+
+            <div class="invite-buttons">
+                <button id="inviteButton" class="invite-button">Invite a Friend</button>
+                <button id="copyButton" class="copy-button"><i class="fas fa-copy"></i></button>
+            </div>
+        </div>
+
+        <div class="referral-container">
+            <div id="referralsDisplay" class="referral-list"></div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i> Referral link copied!
+    </div>
+    <script>
+    Telegram.WebApp.ready();
+    window.Telegram.WebApp.setHeaderColor("#1d283a");
+
+    const notification = document.getElementById("notification");
+    const showNotification = () => {
+        notification.classList.add("show");
+        setTimeout(() => {
+            notification.classList.remove("show");
+        }, 2000);
+    };
+
+    document.getElementById("copyButton").onclick = () => {
+        const userId = Telegram.WebApp.initDataUnsafe?.user?.id;
+        if (userId) {
+            const referralLink = `https://t.me/TGStarAppBot?start=${userId}`;
+            navigator.clipboard.writeText(referralLink).then(showNotification).catch(err => console.error("Failed to copy: ", err));
+        }
+    };
+
+    window.addEventListener("load", async () => {
+        const userId = Telegram.WebApp.initDataUnsafe?.user?.id;
+        const referralsDisplay = document.getElementById("referralsDisplay");
+        if (userId) {
+            const referralLink = `https://t.me/TGStarAppBot?start=${userId}`;
+            document.getElementById("inviteButton").onclick = () => {
+                window.open(
+  `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=` + 
+  encodeURIComponent(
+    "🚀 Join me on bot and start earning today!\n\n" +
+    "💰 Earn Stars by referring friends & completing tasks\n" +
+    "⚡️ Instant withdrawals when you collect enough Stars\n" +
+    "🎁 Bonus rewards for active users!\n\n" +
+    "Try it now 👇"
+  ), 
+  "_blank"
+);
+            };
+            try {
+                const response = await fetch(`/App/daTa/Referal/ref.php?get=${userId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    referralsDisplay.innerHTML = `
+                        <div class="referral-stats">
+                            <div>Total Friends Invited: ${data.total_users}</div>
+                            <div>Total Stars Earned: ${data.total_rewards}</div>
+                        </div>
+                    `;
+                    if (data.users && data.users.length > 0) {
+                        data.users.forEach(user => {
+                            const displayName = user.user_name.length > 25 ? user.user_name.slice(0, 22) + "..." : user.user_name;
+                            const referralItem = document.createElement("div");
+                            referralItem.classList.add("referral-item");
+                            referralItem.innerHTML = `<div>${displayName}</div><div><img src="https://www.emojiall.com/images/240/telegram/2b50.gif" class="coin-icon" alt="Star Icon"> ${user.reward}</div>`;
+                            referralsDisplay.appendChild(referralItem);
+                        });
+                    } else {
+                        referralsDisplay.innerHTML += `<p>No referrals found <img src="cryingemoji.gif" style="width: 20px; height: 20px; vertical-align: middle;"></p>`;
+                    }
+                } else {
+                    referralsDisplay.innerHTML = `<p>No referral data found. Start inviting friends! <img src="cryingemoji.gif" style="width: 20px; height: 20px; vertical-align: middle;"></p>`;
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                referralsDisplay.innerHTML = `<p>Error loading data. Please try again later. <img src="cryingemoji.gif" style="width: 20px; height: 20px; vertical-align: middle;"></p>`;
+            }
+        } else {
+            referralsDisplay.innerHTML = `<p>User ID not found. Please log in again. <img src="cryingemoji.gif" style="width: 20px; height: 20px; vertical-align: middle;"></p>`;
+        }
+    });
+    </script>
+
+    <div class="footer">
+        <a href="index.html"><i class="fas fa-house icon"></i>Home</a>
+        <a href="Task/index.html"><i class="fas fa-tasks icon"></i>Task</a>
+        <a href="friend.html" class="active"><i class="fas fa-user-group icon"></i>Friends</a>
+        <a href="DailySecretCode/index.html"><i class="fas fa-key icon"></i>Daily Code</a>
+    </div>
+</body>
+
+<!-- Mirrored from saeedg110.serv00.net/App/friend.php by HTTrack Website Copier/3.x [XR&CO'2017], Tue, 06 May 2025 10:45:57 GMT -->
+</html>
